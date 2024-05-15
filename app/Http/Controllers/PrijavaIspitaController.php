@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Rok;
 use App\Models\Student;
 use App\Models\SlusanjeStudent;
+use App\Models\PrijavaIspita;
 use Auth;
 
 class PrijavaIspitaController extends Controller
@@ -346,5 +347,21 @@ class PrijavaIspitaController extends Controller
             DB::table('ispitne_prijave')->where('id', $id)->delete();
         }
         return redirect()->back()->with('success', 'Испит је успешно одјављен!');
+    }
+
+    public function azuriraj_prisustvo(Request $request, $id){
+        $newValue = $request->input('valueToUpdate');
+        //\Log::info('Received ID: ' . $id . ' and newValue: ' . $newValue);
+        $row = PrijavaIspita::findOrFail($id);  // find the row with the ID
+        $row->prisustvo = $newValue;   // update the value of the column
+        $row->save();                       // save the changes
+        $prijavaIspita = DB::table('ispitne_prijave')
+        ->selectRaw('users.ime as ime, users.prezime as prezime, studenti.indeks as indeks')
+        ->where('ispitne_prijave.id', $id)
+        ->join('upisi','upisi.id','=','ispitne_prijave.id_upis')
+        ->join('studenti','studenti.id_korisnika','=','upisi.id_student')
+        ->join('users','users.id','=','upisi.id_student')
+        ->get();
+        return response()->json(['success' => true, 'message' => 'Row updated successfully', 'student' => $prijavaIspita[0]]);
     }
 }

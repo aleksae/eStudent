@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Dezurstva;
 
 class DezurstvaController extends Controller
 {
@@ -13,7 +14,7 @@ class DezurstvaController extends Controller
         $id_nastavnika = Auth::user()->id;
 
         $dezurstva = DB::table('dezurstva')
-        ->selectRaw('dezurstva.id_dezurstva as id_dezurstva, predmeti.naziv as predmet, predmeti.sifra as sifra, predmetne_obaveze.naziv as obaveza, predmetne_obaveze.jeste_ispit, rokovi.id as id_rok, rokovi.naziv_skraceno as rok, predmetna_grupa_postoji_u_roku.datum, predmetna_grupa_postoji_u_roku.vreme, 
+        ->selectRaw('dezurstva.id_dezurstva as id_dezurstva,dezurstva.id_predmetne_grupe_u_roku as grupa,  dezurstva.status as status, predmeti.naziv as predmet, predmeti.sifra as sifra, predmetne_obaveze.naziv as obaveza, predmetne_obaveze.jeste_ispit, rokovi.id as id_rok, rokovi.naziv_skraceno as rok, predmetna_grupa_postoji_u_roku.datum, predmetna_grupa_postoji_u_roku.vreme, 
         predmetna_grupa_postoji_u_roku.poruka, predmetna_grupa_postoji_u_roku.id_zbornog_mesta as zborno_mesto, prostorije.*, zgrade.*')
         ->where('id_nastavnika', $id_nastavnika)
         
@@ -39,5 +40,14 @@ class DezurstvaController extends Controller
             $dezurstvo->zborno_mesto = "<strong>".$res->pun_naziv."</strong> - ".$res->lokacija.", ".$res->naziv_zgrade;
         }
         return view("zaposleni.dezurstva", ['dezurstva'=>$dezurstva]);
+    }
+    public function azuriraj_status(Request $request, $id) {
+        $newValue = $request->input('valueToUpdate');
+        \Log::info('Received ID: ' . $id . ' and newValue: ' . $newValue);
+        //console.log($newValue);
+        $row = Dezurstva::findOrFail($id);
+        $row->status = $newValue;
+        $row->save();   
+        return response()->json(['success' => true, 'message' => 'Row updated successfully']);
     }
 }
