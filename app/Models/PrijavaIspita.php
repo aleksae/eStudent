@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PrijavaIspita extends Model
 {
+    protected $table = 'ispitne_prijave';
     use HasFactory;
+    protected $fillable = ['prisustvo'];
 }
