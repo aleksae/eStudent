@@ -79,7 +79,7 @@
                           <th>Потписао</th>
                           <th>Порука</th>
                           <th>Потврда изласка</th>
-                       
+                          <th>QR код</th>
                         </tr>
                       </thead>
                       <tbody class="table-tbody">
@@ -122,6 +122,7 @@
                             </label> 
                                                
                           </td>
+                          <td>{!!QrCode::generate($prijavljen->id_prijave)!!} </td>
                         </tr>
                       @endforeach
                       <?php $jeste_ispit = false; ?>
@@ -190,6 +191,7 @@
                             </label> 
                                                
                           </td>
+                          <td>{!! QrCode::generate($prijavljen->id_prijave) !!}</td>
                         </tr>
                       @endforeach
                       </tbody>
