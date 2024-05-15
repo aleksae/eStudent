@@ -33,7 +33,7 @@
                         <th><button class="table-sort" data-sort="sort-espb">Време</button></th>
                         <th><button class="table-sort" data-sort="sort-semestar">Просторија</button></th>
                         <th><button class="table-sort" data-sort="sort-status">Зборно место</button></th>
-                        
+                        <th>Акција</th>
                         
                         
                      
@@ -52,7 +52,16 @@
                         <td class="sort-espb">{{$dezurstvo->vreme}}</td>
                         <td class="sort-semestar"><strong>{{$dezurstvo->pun_naziv}}</strong> - {{$dezurstvo->lokacija}}, {{$dezurstvo->naziv_zgrade}}</td>
                         <td class="sort-status">@php print_r($dezurstvo->zborno_mesto); @endphp</td>
-                        
+                        <td>
+                        @if($dezurstvo->status=='b')
+                          <a href="{{ route('zap.dezurstvo_u_toku', ['grupa' => $dezurstvo->grupa, 'dezurstvo'=> $dezurstvo->id_dezurstva]) }}" onclick="otpocniDezurstvo({{$dezurstvo->id_dezurstva}})">Отпочни дежурство</a>
+                        @elseif($dezurstvo->status=='t')
+                        <a href="{{ route('zap.dezurstvo_u_toku', ['grupa' => $dezurstvo->grupa, 'dezurstvo'=> $dezurstvo->id_dezurstva]) }}">Настави дежурство</a>
+                        @else
+                        Дежурство је завршено.
+                        @endif
+                             
+                        </td>
                         
                         
                         
@@ -78,11 +87,13 @@
             </div>
           </div>
         </div>
-        @endsection
+        
         
     <!-- Libs JS -->
     <script src="{{asset('dist/libs/list.js/dist/list.min.js?1674944402')}}" defer></script>
    
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
       document.addEventListener("DOMContentLoaded", function() {
       const list = new List('table-default', {
@@ -94,5 +105,24 @@
       	]
       });
       })
+      function otpocniDezurstvo(id) {
+        fetch(`/api/azuriraj_dezurstvo/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRF token
+                    },
+                    body: JSON.stringify({
+                        valueToUpdate: 't' // the new value for the column
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+      }
     </script>
-
+@endsection
