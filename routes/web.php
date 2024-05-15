@@ -76,9 +76,14 @@ Route::get('/zaposleni/predmetne_aktivnosti_brisanje/{id}',[App\Http\Controllers
 Route::get('/rokovi/pregled_za_nastavnike/{rok}/{predmet}', [App\Http\Controllers\RokoviController::class, 'predmeti_u_roku_za_nastavnike'])->name('zap.predmet_u_roku')->middleware('nastavnik');
 Route::post('/rokovi/sacuvaj_ocenu', [App\Http\Controllers\RokoviController::class, 'sacuvaj_ocenu'])->name('zap.sacuvaj_ocenu')->middleware('nastavnik');
 Route::post('/rokovi/zakljucaj_ocene', [App\Http\Controllers\RokoviController::class, 'zakljucaj_ocene'])->name('zap.zakljucaj_ocene')->middleware('nastavnik');
+
 //Dezurstva
 Route::get('/zaposleni/pregled_dezurstava', [App\Http\Controllers\DezurstvaController::class, 'index'])->name('zap.dezurstva')->middleware('nastavnik');
+Route::get('/zaposleni/pregled_dezurstava/dezurstvo/{grupa}/{dezurstvo}', [App\Http\Controllers\DezurstvoUTokuController::class, 'show'])->name('zap.dezurstvo_u_toku')->middleware('nastavnik');
 
+Route::post('/api/azuriraj_prisustvo/{id}', [App\Http\Controllers\PrijavaIspitaController::class, 'azuriraj_prisustvo']);
+
+Route::post('/api/azuriraj_dezurstvo/{id}',[App\Http\Controllers\DezurstvaController::class,'azuriraj_status']);
 //Raspored casova
 Route::get('/studenti/raspored_casova', [App\Http\Controllers\RasporedCasovaController::class, 'index'])->name('stud.rasp_cas')->middleware('student');
 //
