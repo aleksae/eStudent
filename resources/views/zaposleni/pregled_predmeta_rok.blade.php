@@ -32,15 +32,15 @@
                   <input type="hidden" value="{{$id_niz}}" name="id_prijava"/>
                   <button type="submit" class="btn btn-warning">Закључај</button>
                 </form>
-               
+
                 <div id="table-default" class="table-responsive">
-            
+
                   <table class="table table-bordered table-striped">
                     <thead>
                       <tr>
                         <th><button class="table-sort" data-sort="sort-sifra">Име</button></th>
                         <th><button class="table-sort" data-sort="sort-naziv">Презиме</button></th>
-                        
+
                         <th><button class="table-sort" data-sort="sort-grupe" >Сала</button></th>
                         <th><button class="table-sort" data-sort="sort-sk" >Обавеза</button></th>
                         @if(Carbon\Carbon::now()>Carbon\Carbon::parse($vreme_kraja))
@@ -48,17 +48,17 @@
                         <th>Оцена</th>
                         <th></th>
                         @endif
-                  
-                        
-                        
-                        
-                     
+
+
+
+
+
                       </tr>
                     </thead>
                     <tbody class="table-tbody">
-                     
+
                       @foreach($ispitne_prijave as $ip)
-                    
+
                       <tr>
                         <td class="sort-sifra">
                         {{$ip->ime}}</td>
@@ -75,16 +75,14 @@
                       @enderror
                         </th>
                         <th><input type="number" class="form-control" id="ocena-{{$ip->id_prijave}}" name="ocena" value="{{$ip->ocena}}"/>
-                        
+
                           @error('ocena')
                           <div class="alert alert-danger mt-1">{{ $message }}</div>
                       @enderror</th>
                         <th><button type="submit" class="btn btn-primary">Сачувај</button></th>
                       </form>
                         @endif
-                        
-                        
-                        
+
                       </tr>
                       @endforeach
                     </tbody>
@@ -108,17 +106,17 @@
           </div>
         </div>
         @endsection
-        
+
     <!-- Libs JS -->
     <script src="{{asset('dist/libs/list.js/dist/list.min.js?1674944402')}}" defer></script>
-   
+
     <script>
       document.addEventListener("DOMContentLoaded", function() {
       const list = new List('table-default', {
       	sortClass: 'table-sort',
       	listClass: 'table-tbody',
       	valueNames: [ 'sort-sifra', 'sort-naziv', 'sort-semestar', 'sort-status',
-      		
+
       		'sort-espb', 'sort-sk', 'sort-grupe'
       	]
       });

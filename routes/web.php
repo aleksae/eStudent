@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
- 
+
 
 
 
@@ -84,3 +85,6 @@ Route::get('/studenti/raspored_casova', [App\Http\Controllers\RasporedCasovaCont
 //
 Route::get('/zaposleni/studentska_sluzba/pregled_rokova', [App\Http\Controllers\StudentskaRokoviController::class, 'index'])->name('ss.pregled_rokova')->middleware('stud_sluz');
 Route::get('/zaposleni/studentska_sluzba/dodaj_ispit_u_rok/{id}', [App\Http\Controllers\StudentskaRokoviController::class, 'dodavanje_u_rok'])->name('ss.dodavanje_u_rok')->middleware('stud_sluz');
+
+//testiranje glupog mejla
+Route::get('/send-test-email', [TestEmailController::class, 'sendTestEmail']);

@@ -78,6 +78,11 @@ return [
                 'log',
             ],
         ],
+        'sendgrid' => [
+            'transport' => 'sendgrid',
+            'api_key' => env('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'),
+        ],
+
     ],
 
     /*
@@ -92,7 +97,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'lukamuticxy@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
